@@ -14,6 +14,7 @@ def game_factory(monkeypatch): # for passing inputs with full playthroughs
         input_iter = iter(inputs)
 
         def mock_input(prompt):
+            # replacing built-in input function which receives a prompt string
             return next(input_iter)
         
         monkeypatch.setattr('builtins.input', mock_input)
