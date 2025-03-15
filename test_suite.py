@@ -1,31 +1,33 @@
 import pytest
 from tictactoe import TicTacToe
 
-@pytest.fixture
-def game():
+@pytest.fixture 
+def game(): # for directly modifying instance attributes 
     new_game_instance = TicTacToe()
-    yield new_game_instance  # "yielding" game instance = pytest construct meaning that each test gets a new instance
+    yield new_game_instance  
 
 @pytest.fixture
-def game_factory(monkeypatch):
+def game_factory(monkeypatch): # for passing inputs with full playthroughs
+
     def game_instance(inputs):
         preloaded_game_instance = TicTacToe()
         input_iter = iter(inputs)
+
         def mock_input(prompt):
             return next(input_iter)
+        
         monkeypatch.setattr('builtins.input', mock_input)
         return preloaded_game_instance
+    
     return game_instance
 
-def test_initialization(game):
+def test_initial_state(game):
     expected_ledger = {str(val): None for val in range(1,10)}
     assert game.ledger == expected_ledger
 
     expected_display = [[1,2,3],[4,5,6],[7,8,9]]
     assert game.display == expected_display
-
     assert game.token == "x"
-
     assert not game.game_over
 
 
@@ -33,6 +35,7 @@ def test_taking_turns(game):
 
     game.update_turn()
     assert game.token == "o"
+    
     game.update_turn()
     assert game.token == "x"
 
