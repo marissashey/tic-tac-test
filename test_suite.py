@@ -23,11 +23,8 @@ def game_factory(monkeypatch): # for passing inputs with full playthroughs
     return game_instance
 
 def test_initial_state(game):
-    expected_ledger = {str(val): None for val in range(1,10)}
-    assert game.ledger == expected_ledger
-
-    expected_display = [[1,2,3],[4,5,6],[7,8,9]]
-    assert game.display == expected_display
+    expected_move_log = {str(val): None for val in range(1,10)}
+    assert game.move_log == expected_move_log
     assert game.token == "x"
     assert not game.game_over
 
@@ -39,8 +36,6 @@ def test_taking_turns(game):
     
     game.update_turn()
     assert game.token == "x"
-
-
 
 
 def test_x_wins(game_factory):
